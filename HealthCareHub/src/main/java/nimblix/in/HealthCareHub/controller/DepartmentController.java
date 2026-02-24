@@ -1,26 +1,25 @@
 package nimblix.in.HealthCareHub.controller;
 
-import nimblix.in.HealthCareHub.request.CreateDepartmentRequest;
-import nimblix.in.HealthCareHub.response.DepartmentResponse;
+import nimblix.in.HealthCareHub.model.Department;
 import nimblix.in.HealthCareHub.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/departments")
+@RequestMapping("/departments")
 public class DepartmentController {
 
-    private final DepartmentService departmentService;
-
     @Autowired
-    public DepartmentController(DepartmentService departmentService) {
-        this.departmentService = departmentService;
-    }
+    private DepartmentService departmentService;
 
     @PostMapping
-    public DepartmentResponse createDepartment(
-            @RequestBody CreateDepartmentRequest request) {
+    public ResponseEntity<Department> createDepartment(
+            @RequestBody Department department) {
 
-        return departmentService.createDepartment(request);
+        Department savedDepartment =
+                departmentService.createDepartment(department);
+
+        return ResponseEntity.status(201).body(savedDepartment);
     }
 }

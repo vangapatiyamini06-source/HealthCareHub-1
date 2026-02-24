@@ -1,9 +1,8 @@
 package nimblix.in.HealthCareHub.service;
 
-import nimblix.in.HealthCareHub.request.CreateDepartmentRequest;
-import nimblix.in.HealthCareHub.response.DepartmentResponse;
+import nimblix.in.HealthCareHub.model.Department;
 
 public interface DepartmentService {
 
-    DepartmentResponse createDepartment(CreateDepartmentRequest request);
+    Department createDepartment(Department department);
 }

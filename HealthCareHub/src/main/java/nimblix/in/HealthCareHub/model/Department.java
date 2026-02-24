@@ -1,5 +1,4 @@
-package nimblix.in.HealthCareHub.entity;
-
+package nimblix.in.HealthCareHub.model;
 import jakarta.persistence.*;
 
 @Entity
@@ -18,6 +17,10 @@ public class Department {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {   //
+        this.id = id;
     }
 
     public String getDepartmentName() {

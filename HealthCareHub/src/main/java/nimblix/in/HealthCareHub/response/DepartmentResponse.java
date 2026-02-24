@@ -12,6 +12,7 @@ public class DepartmentResponse {
         this.description = description;
     }
 
+    // Getters
     public Long getId() {
         return id;
     }
