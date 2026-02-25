@@ -1,12 +1,17 @@
 package nimblix.in.HealthCareHub.controller;
 
+
 import lombok.RequiredArgsConstructor;
+import nimblix.in.HealthCareHub.model.Department;
 import nimblix.in.HealthCareHub.request.HospitalRegistrationRequest;
 import nimblix.in.HealthCareHub.service.HospitalService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/hospital")
@@ -19,5 +24,15 @@ public class HospitalController {
     public String registerHospital(@RequestBody HospitalRegistrationRequest request) {
         return hospitalService.registerHospital(request);
     }
-    
+
+    // Department APIs
+    @PostMapping("/departments")
+    public Department createDepartment(@RequestBody Department department) {
+        return hospitalService.createDepartment(department);
+    }
+
+    @GetMapping("/departments")
+    public List<Department> getAllDepartments() {
+        return hospitalService.getAllDepartments();
+    }
 }
