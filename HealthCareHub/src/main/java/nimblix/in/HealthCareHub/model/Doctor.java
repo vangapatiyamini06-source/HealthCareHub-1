@@ -44,7 +44,7 @@ public class Doctor {
     private Hospital hospital;
 
     @Column(name = "is_active")
-    private  String isActive;
+    private String isActive;
 
     // ✅ Many Doctors → One Specialization
     @ManyToOne
@@ -55,13 +55,13 @@ public class Doctor {
     private String updatedTime;
 
     @PrePersist
-    protected void onCreate(){
+    protected void onCreate() {
         createdTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
         updatedTime = createdTime;
     }
 
     @PreUpdate
-    protected void onUpdate(){
+    protected void onUpdate() {
         updatedTime = HealthCareUtil.changeCurrentTimeToLocalDateFromGmtToISTInString();
     }
 }
