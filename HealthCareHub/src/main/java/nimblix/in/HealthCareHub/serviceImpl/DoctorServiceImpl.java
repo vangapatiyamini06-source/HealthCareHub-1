@@ -20,8 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.ZoneId;
 
 @Service
@@ -35,28 +33,21 @@ public class DoctorServiceImpl implements DoctorService {
 
     private static final ZoneId IST_ZONE = ZoneId.of("Asia/Kolkata");
     private String getTodayDateIST() {
-        return java.time.LocalDate.now(IST_ZONE).toString(); // yyyy-MM-dd
+        return java.time.LocalDate.now(IST_ZONE).format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
     private String getCurrentTimeIST() {
         return java.time.LocalTime.now(IST_ZONE)
-                .withSecond(0)
-                .withNano(0)
-                .toString()
-                .substring(0, 5); // HH:mm
+                .format(java.time.format.DateTimeFormatter.ofPattern("HH:mm"));
     }
-    private void validateDateFormat(String date) {
-        try {
-            LocalDate.parse(date);
-        } catch (Exception e) {
+    private void validateDateStringFormat(String date) {
+        if (!date.matches("\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])")) {
             throw new IllegalArgumentException("Invalid date format. Use yyyy-MM-dd");
         }
     }
 
-    private void validateTimeFormat(String time) {
-        try {
-            LocalTime.parse(time);
-        } catch (Exception e) {
+    private void validateTimeStringFormat(String time) {
+        if (!time.matches("([01][0-9]|2[0-3]):[0-5][0-9]")) {
             throw new IllegalArgumentException("Invalid time format. Use HH:mm");
         }
     }
@@ -83,9 +74,9 @@ public class DoctorServiceImpl implements DoctorService {
         if (request.getIsAvailable() == null)
             throw new IllegalArgumentException("Availability status cannot be null");
 
-        validateDateFormat(request.getAvailableDate());
-        validateTimeFormat(request.getStartTime());
-        validateTimeFormat(request.getEndTime());
+        validateDateStringFormat(request.getAvailableDate());
+        validateTimeStringFormat(request.getStartTime());
+        validateTimeStringFormat(request.getEndTime());
 
        Doctor doctor= doctorRepository.findById(doctorId)
                 .orElseThrow(() -> new UserNotFoundException(
@@ -191,9 +182,9 @@ public class DoctorServiceImpl implements DoctorService {
                 ( finalAvailability == slot.isAvailable())) {
             throw new IllegalStateException("No changes detected for update");
         }
-        validateDateFormat(finalDate);
-        validateTimeFormat(finalStart);
-        validateTimeFormat(finalEnd);
+        validateDateStringFormat(finalDate);
+        validateTimeStringFormat(finalStart);
+        validateTimeStringFormat(finalEnd);
 
         String today = getTodayDateIST();
         String currentTime = getCurrentTimeIST();

@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.PublicKey;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/doctors")
@@ -43,8 +45,9 @@ public class DoctorController {
     public String deleteDoctorDetails(@RequestParam Long doctorId){
         return doctorService.deleteDoctorDetails(doctorId);
     }
+
     @PostMapping("/{doctorId}/timeslots")
-    public ResponseEntity<DoctorAvailabilityResponse> addTimeSlot(
+    public ResponseEntity<Map<String, Object>> addTimeSlot(
             @PathVariable Long doctorId,
             @RequestBody DoctorAvailabilityRequest request) {
 
@@ -52,19 +55,30 @@ public class DoctorController {
         DoctorAvailabilityResponse response =
                 doctorService.addDoctorTimeSlot( request);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("status", HttpStatus.CREATED.value());
+        result.put("message", "Time slot added successfully");
+        result.put("data", response);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
     @PutMapping("/{doctorId}/timeslots/{slotId}")
-    public ResponseEntity<DoctorAvailabilityResponse> updateTimeSlot(
+    public ResponseEntity<Map<String, Object>> updateTimeSlot(
             @PathVariable Long doctorId,
             @PathVariable Long slotId,
             @RequestBody DoctorAvailabilityRequest request) {
         request.setDoctorId(doctorId);
         request.setSlotId(slotId);
+
         DoctorAvailabilityResponse response =
                 doctorService.updateDoctorTimeSlot(request);
 
-        return ResponseEntity.ok(response);
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("status", HttpStatus.OK.value());
+        result.put("message", "Time slot updated successfully");
+        result.put("data", response);
+
+        return ResponseEntity.ok(result);
     }
 }
