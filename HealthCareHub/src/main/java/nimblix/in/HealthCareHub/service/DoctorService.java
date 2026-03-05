@@ -15,6 +15,7 @@ public interface DoctorService {
 
     String registerDoctor(DoctorRegistrationRequest request);
 
+    String registerDoctor(DoctorRegistrationRequest request);
     ResponseEntity<?> getDoctorDetails(Long doctorId, Long hospitalId);
 
 
@@ -22,5 +23,6 @@ public interface DoctorService {
     String updateDoctorDetails(DoctorRegistrationRequest request);
 
     String deleteDoctorDetails(Long doctorId);
+
 }
 

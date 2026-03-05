@@ -33,6 +33,7 @@ public class Doctor {
     private String password;
 
     private String qualification;
+    private Double consultationFee;
 
     // ✅ Doctor login account
     @OneToOne

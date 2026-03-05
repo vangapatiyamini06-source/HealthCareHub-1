@@ -5,10 +5,7 @@ import nimblix.in.HealthCareHub.request.DoctorAvailabilityRequest;
 import nimblix.in.HealthCareHub.request.DoctorRegistrationRequest;
 import nimblix.in.HealthCareHub.response.DoctorAvailabilityResponse;
 import nimblix.in.HealthCareHub.service.DoctorService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
-import org.springframework.http.HttpStatus;
+import nimblix.in.HealthCareHub.serviceImpl.DoctorServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,19 +18,21 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class DoctorController {
 
+
     private final DoctorService doctorService;
 
+
     @PostMapping("/register")
-    public String registerDoctor(@RequestBody DoctorRegistrationRequest request) {
-        return doctorService.registerDoctor(request);
+    public ResponseEntity<?> registerDoctor(@RequestBody DoctorRegistrationRequest request) {
 
-    }
+        if (request == null ||
+                request.getDoctorName() == null ||
+                request.getDoctorEmail() == null ||
+                request.getHospitalId() == null ||
+                request.getConsultationFee() == null) {
 
-    @GetMapping("/getDoctorDetails/{doctorId}/{hospitalId}")
-    public ResponseEntity<?> getDoctorDetails(@PathVariable Long doctorId,
-                                              @PathVariable Long hospitalId) {
-        return doctorService.getDoctorDetails(doctorId, hospitalId);
-    }
+            return ResponseEntity.badRequest().body("Required fields are missing");
+        }
 
     @PutMapping("/updateDoctorDetails")
      public String updateDoctorDetails(@RequestBody DoctorRegistrationRequest request){
